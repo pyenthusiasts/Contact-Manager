@@ -1,7 +1,7 @@
 class Contact:
     """
     A class to represent a contact.
-
+ 
     Attributes:
     -----------
     name : str
