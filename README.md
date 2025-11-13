@@ -1,6 +1,14 @@
 # Contact Manager v2.0
 
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![CI](https://github.com/pyenthusiasts/Contact-Manager/workflows/CI/badge.svg)](https://github.com/pyenthusiasts/Contact-Manager/actions)
+
 A professional, feature-rich Python-based contact management system with a clean command-line interface, data persistence, and comprehensive validation. Perfect for learning Python development best practices or managing your contacts efficiently.
+
+**[Features](#features)** | **[Installation](#installation)** | **[Usage](#usage)** | **[Development](#development)** | **[Contributing](#contributing)**
 
 ## Features
 
@@ -68,11 +76,34 @@ contact-manager
 python -m contact_manager
 ```
 
+### Using Docker
+
+```bash
+# Build image
+docker build -t contact-manager .
+
+# Run container
+docker run -it --rm -v $(pwd)/data:/app/data contact-manager
+
+# Or use docker-compose
+docker-compose up
+```
+
+### Quick Setup Script
+
+```bash
+# Unix/Linux/macOS
+./scripts/setup_dev.sh
+
+# Windows
+scripts\setup_dev.bat
+```
+
 ## Usage
 
 ### Interactive Menu
 
-When you run the application, you'll see an interactive menu:
+When you run the application without arguments, you'll see an interactive menu:
 
 ```
 ==================================================
@@ -204,10 +235,86 @@ Contacts with Address: 10
 Contacts with Notes: 5
 ```
 
+### Command-Line Interface
+
+Contact Manager also supports non-interactive CLI usage:
+
+```bash
+# Add a contact
+contact-manager add "John Doe" john@example.com "555-1234" --address "123 Main St" --notes "Client"
+
+# Search contacts
+contact-manager search john
+
+# List all contacts
+contact-manager list
+
+# Delete a contact
+contact-manager delete john@example.com --force
+
+# Export contacts
+contact-manager export contacts.csv
+
+# View statistics
+contact-manager stats
+
+# Specify custom storage location
+contact-manager --storage ~/my-contacts.json list
+
+# Enable debug logging
+contact-manager --log-level DEBUG --log-file app.log
+```
+
+### Using Makefile
+
+For development tasks:
+
+```bash
+# Show all available commands
+make help
+
+# Install for development
+make install-dev
+
+# Run tests
+make test
+
+# Run tests with coverage
+make test-cov
+
+# Format code
+make format
+
+# Run linters
+make lint
+
+# Type checking
+make type-check
+
+# Clean generated files
+make clean
+
+# Generate demo data
+make demo
+
+# Build Docker image
+make docker-build
+
+# Run all checks (clean, install, lint, test)
+make all
+```
+
 ## Project Structure
 
 ```
 Contact-Manager/
+├── .github/
+│   ├── workflows/
+│   │   └── ci.yml               # GitHub Actions CI/CD
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md        # Bug report template
+│   │   └── feature_request.md   # Feature request template
+│   └── pull_request_template.md # PR template
 ├── src/
 │   └── contact_manager/
 │       ├── __init__.py          # Package initialization
@@ -216,19 +323,39 @@ Contact-Manager/
 │       ├── validation.py        # Input validation utilities
 │       ├── storage.py           # Data persistence layer
 │       ├── manager.py           # Contact management logic
-│       └── ui.py                # User interface
+│       ├── ui.py                # Interactive user interface
+│       ├── cli.py               # Command-line interface
+│       └── logger.py            # Logging configuration
 ├── tests/
 │   ├── __init__.py
 │   ├── test_models.py           # Model tests
 │   ├── test_validation.py       # Validation tests
 │   └── test_manager.py          # Manager tests
+├── scripts/
+│   ├── generate_demo_data.py    # Demo data generator
+│   ├── setup_dev.sh             # Dev setup (Unix)
+│   └── setup_dev.bat            # Dev setup (Windows)
+├── legacy/
+│   └── contact_manager_v1.py    # Original implementation
 ├── data/                        # Auto-created for storing contacts
 │   └── contacts.json
 ├── run.py                       # Convenience script to run app
 ├── setup.py                     # Package installation script
-├── requirements.txt             # Dependencies
+├── pyproject.toml               # Modern Python project config
+├── requirements.txt             # Core dependencies
+├── requirements-dev.txt         # Development dependencies
+├── Makefile                     # Development tasks automation
+├── Dockerfile                   # Docker container definition
+├── docker-compose.yml           # Docker Compose configuration
+├── .dockerignore                # Docker ignore rules
 ├── pytest.ini                   # Pytest configuration
+├── .flake8                      # Flake8 linter config
+├── .pre-commit-config.yaml      # Pre-commit hooks
 ├── .gitignore                   # Git ignore rules
+├── CONTRIBUTING.md              # Contribution guidelines
+├── CODE_OF_CONDUCT.md           # Code of conduct
+├── SECURITY.md                  # Security policy
+├── CHANGELOG.md                 # Version history
 ├── LICENSE                      # MIT License
 └── README.md                    # This file
 ```
