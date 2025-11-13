@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  contact-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: contact-manager:latest
+    container_name: contact-manager
+    stdin_open: true  # Keep STDIN open
+    tty: true         # Allocate a pseudo-TTY
+    volumes:
+      # Mount data directory for persistence
+      - ./data:/app/data
+      # Optional: mount for development
+      # - ./src:/app/src:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # Development service with hot reload
+  contact-manager-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: contact-manager:dev
+    container_name: contact-manager-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src  # Mount source for development
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEVELOPMENT=1
+    command: python -m contact_manager
+    profiles:
+      - dev
+
+volumes:
+  contact-data:
+    driver: local

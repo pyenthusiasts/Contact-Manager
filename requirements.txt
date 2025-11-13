@@ -1,0 +1,9 @@
+# Core dependencies
+# No external dependencies required for core functionality
+
+# Development dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Optional dependencies for enhanced functionality
+# None required - uses only Python standard library
